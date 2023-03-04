@@ -1,0 +1,17 @@
+{# mysite/templates/base.html #}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Django Blog</title>
+    </head>
+    <body>
+        <div id="container">
+            <div id="content">
+                {% block content %}
+                [content goes here]
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

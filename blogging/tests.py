@@ -27,6 +27,7 @@ class CategoryTestCase(TestCase):
 
 class FrontEndTestCase(TestCase):
     fixtures = ['blogging_test_fixture.json']
+
     def setUp(self):
         self.now = datetime.datetime.utcnow().replace(tzinfo=utc)
         self.timedelta = datetime.timedelta(15)
@@ -50,3 +51,14 @@ class FrontEndTestCase(TestCase):
                 self.assertContains(resp, title, count=1)
             else:
                 self.assertNotContains(resp, title)
+
+    def test_details_only_published(self):
+        for count in range(1, 11):
+            title = f"Post {count} Title"
+            post = Post.objects.get(title=title)
+            resp = self.client.get(f"/posts/{post.pk}")
+            if count < 6:
+                self.assertEqual(resp.status_code, 200)
+                self.assertContains(resp, title)
+            else:
+                self.assertEqual(resp.status_code, 404)
